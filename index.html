@@ -1,643 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Toko Mulia Karya - Premium Laptop Store</title>
-<style>
-  /* Google Fonts - Montserrat */
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tembakan Cinta</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Comic Sans MS", cursive;
+        background: linear-gradient(to right, #ffe0ec, #ffeaa7);
+        overflow: hidden;
+      }
 
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: #f0f2f7;
-    color: #222e44;
-  }
-  header {
-    background: linear-gradient(90deg, #0a2540, #062038);
-    color: #e0e7f3;
-    padding: 1.2rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    box-shadow: 0 3px 12px rgb(10 37 64 / 0.7);
-    z-index: 1000;
-  }
-  header h1 {
-    font-weight: 700;
-    font-size: 2rem;
-    letter-spacing: 2px;
-    user-select: none;
-  }
-  #cart-btn {
-    background: transparent;
-    border: none;
-    color: #a9c1ff;
-    cursor: pointer;
-    position: relative;
-    font-size: 1.7rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    transition: color 0.3s ease;
-  }
-  #cart-btn:hover {
-    color: #3f6fff;
-  }
-  #cart-count {
-    position: absolute;
-    top: -6px;
-    right: -12px;
-    background: #3f6fff;
-    color: #fff;
-    border-radius: 50%;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 3px 7px;
-    box-shadow: 0 0 5px #3f6fffaa;
-  }
-  main {
-    max-width: 1140px;
-    margin: 2.5rem auto;
-    padding: 0 1.5rem 5rem;
-    display: flex;
-    flex-direction: column;
-  }
-  h2.section-title {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: #0a2540;
-    margin-bottom: 1.8rem;
-    text-align:center;
-    letter-spacing: 1.4px;
-  }
-  #products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-    gap: 2.2rem;
-  }
-  .product-card {
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 10px 25px rgb(0 0 0 / 0.12);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.25s ease;
-    cursor: default;
-    will-change: transform;
-    user-select:none;
-  }
-  .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 38px rgb(0 0 0 / 0.2);
-  }
-  .product-image {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    display: block;
-    user-select:none;
-  }
-  .product-details {
-    padding: 1.25rem 1.6rem 2rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .product-title {
-    font-weight: 700;
-    font-size: 1.2rem;
-    margin: 0 0 0.45rem 0;
-    color: #0a2540;
-  }
-  .product-description {
-    font-size: 0.95rem;
-    flex-grow: 1;
-    color: #53607a;
-    margin-bottom: 1.1rem;
-    line-height: 1.35;
-  }
-  .product-specs {
-    font-size: 0.88rem;
-    color: #334158;
-    margin-bottom: 1.1rem;
-    line-height: 1.3;
-    font-weight: 500;
-  }
-  .product-price {
-    font-weight: 800;
-    font-size: 1.25rem;
-    color: #3f6fff;
-    letter-spacing: 0.5px;
-    margin-bottom: 1.25rem;
-  }
-  .btn-add-cart {
-    background: #3f6fff;
-    border: none;
-    padding: 0.7rem 1.25rem;
-    border-radius: 30px;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.4px;
-    cursor: pointer;
-    align-self: flex-start;
-    box-shadow: 0 6px 14px rgb(63 111 255 / 0.7);
-    transition: all 0.3s ease;
-    user-select:none;
-  }
-  .btn-add-cart:hover {
-    background: #3253e6;
-    box-shadow: 0 8px 20px rgb(50 83 230 / 0.85);
-    transform: translateY(-3px);
-  }
-  /* Cart overlay */
-  #cart-overlay {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 400px;
-    max-width: 90vw;
-    height: 100vh;
-    background: #fefefe;
-    box-shadow: -6px 0 25px rgba(0,0,0,0.2);
-    z-index: 1100;
-    display: flex;
-    flex-direction: column;
-    transition: right 0.35s ease;
-    font-size: 1rem;
-    color: #2c3e50;
-  }
-  #cart-overlay.open {
-    right: 0;
-  }
-  #cart-header {
-    background: #3f6fff;
-    color: white;
-    padding: 1.4rem 1.8rem;
-    font-weight: 700;
-    font-size: 1.4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select:none;
-  }
-  #btn-close-cart {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 1.6rem;
-    cursor: pointer;
-    font-weight: 900;
-    padding: 0;
-    line-height: 1;
-    user-select:none;
-  }
-  #cart-items {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 1.4rem 1.6rem;
-  }
-  .cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.1rem;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.9rem;
-  }
-  .cart-item-img {
-    width: 75px;
-    height: 55px;
-    border-radius: 8px;
-    object-fit: cover;
-    margin-right: 1.3rem;
-    flex-shrink: 0;
-    user-select:none;
-  }
-  .cart-item-info {
-    flex-grow: 1;
-  }
-  .cart-item-title {
-    font-weight: 700;
-    font-size: 1rem;
-    margin: 0 0 6px 0;
-    color: #0a2540;
-  }
-  .cart-item-price {
-    font-weight: 700;
-    color: #3f6fff;
-  }
-  .cart-item-qty {
-    display: flex;
-    align-items: center;
-    margin-top: 6px;
-  }
-  .qty-btn {
-    background: #d0dbff;
-    border: none;
-    padding: 4px 12px;
-    margin: 0 6px;
-    cursor: pointer;
-    font-weight: 700;
-    border-radius: 6px;
-    color: #3f6fff;
-    font-size: 1.15rem;
-    user-select:none;
-    transition: background-color 0.25s ease;
-  }
-  .qty-btn:hover {
-    background: #a3b3ff;
-  }
-  .qty-count {
-    font-size: 1.1rem;
-    min-width: 26px;
-    text-align: center;
-    color: #334158;
-    font-weight: 600;
-    user-select:none;
-  }
-  .btn-remove {
-    background: transparent;
-    border: none;
-    color: #999;
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-left: 14px;
-    transition: color 0.3s ease;
-    user-select:none;
-  }
-  .btn-remove:hover {
-    color: #3f6fff;
-  }
-  #cart-footer {
-    border-top: 1px solid #ddd;
-    padding: 1.4rem 1.8rem;
-    user-select:none;
-  }
-  #cart-total {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #0a2540;
-    margin-bottom: 1.2rem;
-  }
-  #btn-checkout {
-    width: 100%;
-    background: #3f6fff;
-    color: white;
-    border: none;
-    padding: 0.9rem 0;
-    font-weight: 700;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 1.15rem;
-    transition: background 0.3s ease;
-    user-select:none;
-  }
-  #btn-checkout:disabled {
-    background: #aab9ff;
-    cursor: not-allowed;
-  }
-  #btn-checkout:hover:not(:disabled) {
-    background: #274bc6;
-  }
-  /* Empty cart message */
-  #empty-cart-message {
-    text-align: center;
-    color: #999;
-    margin-top: 3rem;
-    font-style: italic;
-    font-weight: 600;
-    user-select:none;
-  }
-  .wa-float {
-  position: fixed;
-  width: 45px;
-  height: 45px;
-  bottom: 20px;
-  right: 20px;
-  background-color: #25d366;
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1001;
-  transition: transform 0.3s ease;
-}
-.wa-float:hover {
-  transform: scale(1.1);
-}
-.wa-icon-small {
-  width: 50px;
-  height: 50;
-}
+      .page {
+        display: none;
+        height: 100vh;
+        width: 100vw;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
 
-  
-  /* Responsive */
-  @media (max-width: 480px) {
-    #cart-overlay {
-      width: 100vw;
-    }
-    #cart-header {
-      font-size: 1.1rem;
-      padding: 1rem 1rem;
-    }
-    #cart-footer {
-      padding: 1rem 1rem;
-    }
-  }
-</style>
-</head>
-<body>
-<header>
-  <h1>Laptop Mulia Karya</h1>
-  <button id="cart-btn" aria-label="Open cart">
-    🛒 Cart
-    <span id="cart-count" style="display:none;">0</span>
-  </button>
-</header>
-<main>
-  <h2 class="section-title">Tersedia Sekarang</h2>
-  <section id="products" aria-label="Product catalog">
-    <!-- Product cards inserted by JS -->
-  </section>
-</main>
+      .active {
+        display: flex;
+      }
 
-<!-- Cart Sidebar -->
-<aside id="cart-overlay" aria-labelledby="cart-header" aria-hidden="true" role="dialog" tabindex="-1">
-  <div id="cart-header">
-    Your Cart
-    <button id="btn-close-cart" aria-label="Close cart">&times;</button>
-  </div>
-  <div id="cart-items" tabindex="0">
-    <!-- Cart items inserted by JS -->
-  </div>
-  <div id="cart-footer">
-    <div id="cart-total">Total: $0.00</div>
-    <button id="btn-checkout" disabled>Checkout via WhatsApp</button>
-  </div>
-</aside>
+      .box {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        position: relative;
+        transition: 0.3s;
+      }
 
-<script>
-  const products = [
-    {
-      id: 1,
-      title: "ASUS",
-      description: "Ultra-slim laptop with powerful Intel i7 processor and vivid 14-inch 2.8K OLED display.",
-      specs: "Intel i7, 16GB RAM, 1TB SSD, Intel Iris Xe Graphics",
-      price: 1349.99,
-      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 2,
-      title: "HP",
-      description: "Reliable and efficient laptop with AMD Ryzen 7 and dedicated NVIDIA graphics for gamers.",
-      specs: "AMD Ryzen 7, 16GB RAM, 512GB SSD, NVIDIA GTX1650",
-      price: 1159.00,
-      image: "https://images.unsplash.com/photo-1555617117-08bad9af3cf7?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 3,
-      title: "ACER",
-      description: "Lightweight and ultra-portable laptop with great battery life and Retina display.",
-      specs: "Intel i5, 8GB RAM, 256GB SSD, Intel UHD Graphics",
-      price: 899.50,
-      image: "https://images.unsplash.com/photo-1502880195258-148b14c537da?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 4,
-      title: "ASUS GAMING",
-      description: "High-end gaming beast with RTX 3070 graphics and a 17.3-inch 144Hz display.",
-      specs: "Intel i9, 32GB RAM, 2TB SSD, NVIDIA RTX 3070",
-      price: 2499.99,
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 5,
-      title: "LENOVO",
-      description: "Durable business laptop with extended security features and sleek matte design.",
-      specs: "Intel i7, 16GB RAM, 1TB SSD, Intel UHD Graphics",
-      price: 1220.75,
-      image: "https://images.unsplash.com/photo-1556909190-ff4e1e17eaa6?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 6,
-      title: "HP",
-      description: "Compact budget-friendly laptop perfect for students with all essential features.",
-      specs: "Intel i3, 4GB RAM, 128GB SSD, Intel UHD Graphics",
-      price: 499.99,
-      image: "https://images.unsplash.com/photo-1541807084-5c52b6bfe7ff?auto=format&fit=crop&w=400&q=80"
-    }
-  ];
+      .btn {
+        background: #fd79a8;
+        border: none;
+        padding: 15px 25px;
+        color: white;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px;
+        position: relative;
+        transition: transform 0.2s ease;
+      }
 
-  let cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const productsContainer = document.getElementById('products');
-  const cartBtn = document.getElementById('cart-btn');
-  const cartOverlay = document.getElementById('cart-overlay');
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartCount = document.getElementById('cart-count');
-  const btnCloseCart = document.getElementById('btn-close-cart');
-  const cartTotalDisplay = document.getElementById('cart-total');
-  const btnCheckout = document.getElementById('btn-checkout');
+      .btn:hover {
+        background: #e84393;
+      }
 
-  function renderProducts() {
-    productsContainer.innerHTML = '';
-    products.forEach(product => {
-      const card = document.createElement('article');
-      card.className = 'product-card';
-      card.setAttribute('tabindex', '0');
-      card.innerHTML = `
-        <img src="${product.image}" alt="${product.title}" class="product-image" loading="lazy" />
-        <div class="product-details">
-          <h3 class="product-title">${product.title}</h3>
-          <p class="product-description">${product.description}</p>
-          <p class="product-specs">${product.specs}</p>
-          <div>
-            <span class="product-price">$${product.price.toFixed(2)}</span>
-            <button class="btn-add-cart" aria-label="Add ${product.title} to cart" data-id="${product.id}">Add to Cart</button>
-          </div>
-        </div>
-      `;
-      productsContainer.appendChild(card);
-    });
-  }
+      #noBtn {
+        position: absolute;
+      }
 
-  function updateCartCount() {
-    const totalQuantity = Object.values(cart).reduce((a,b) => a+b, 0);
-    if (totalQuantity > 0) {
-      cartCount.style.display = 'inline-block';
-      cartCount.textContent = totalQuantity;
-      btnCheckout.disabled = false;
-    } else {
-      cartCount.style.display = 'none';
-      btnCheckout.disabled = true;
-    }
-  }
+      img {
+        max-width: 300px;
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+      }
 
-  function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }
+      h2 {
+        color: #d63031;
+      }
 
-  function renderCart() {
-    cartItemsContainer.innerHTML = '';
-    if (Object.keys(cart).length === 0) {
-      cartItemsContainer.innerHTML = '<p id="empty-cart-message">Your cart is empty.</p>';
-      cartTotalDisplay.textContent = 'Total: $0.00';
-      updateCartCount();
-      return;
-    }
-    let total = 0;
-    Object.entries(cart).forEach(([id, qty]) => {
-      const product = products.find(p => p.id == id);
-      if (!product) return;
-      const itemTotal = product.price * qty;
-      total += itemTotal;
-      const cartItem = document.createElement('div');
-      cartItem.className = 'cart-item';
-      cartItem.innerHTML = `
-        <img src="${product.image}" alt="${product.title}" class="cart-item-img" loading="lazy" />
-        <div class="cart-item-info">
-          <h4 class="cart-item-title">${product.title}</h4>
-          <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
-          <div class="cart-item-qty" aria-label="Quantity controls for ${product.title}">
-            <button class="qty-btn" aria-label="Decrease quantity" data-id="${product.id}" data-action="decrease">-</button>
-            <div class="qty-count" aria-live="polite">${qty}</div>
-            <button class="qty-btn" aria-label="Increase quantity" data-id="${product.id}" data-action="increase">+</button>
-            <button class="btn-remove" aria-label="Remove ${product.title} from cart" data-id="${product.id}">&times;</button>
-          </div>
-        </div>
-      `;
-      cartItemsContainer.appendChild(cartItem);
-    });
-    cartTotalDisplay.textContent = `Total: $${total.toFixed(2)}`;
-    updateCartCount();
-  }
+      /* Hati Animasi */
+      .heart {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: red;
+        transform: rotate(45deg);
+        animation: floatUp 2s ease-out forwards;
+        opacity: 0.8;
+      }
 
-  function addToCart(id) {
-    if(cart[id]) {
-      cart[id]++;
-    } else {
-      cart[id] = 1;
-    }
-    saveCart();
-    renderCart();
-  }
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+      }
 
-  function changeQuantity(id, action) {
-    if(!cart[id]) return;
-    if(action === 'increase') {
-      cart[id]++;
-    } else if(action === 'decrease') {
-      cart[id]--;
-      if(cart[id] <= 0) delete cart[id];
-    }
-    saveCart();
-    renderCart();
-  }
+      .heart::before {
+        top: -10px;
+        left: 0;
+      }
 
-  function removeItem(id) {
-    if(cart[id]) {
-      delete cart[id];
-      saveCart();
-      renderCart();
-    }
-    
-    
-  }
+      .heart::after {
+        left: -10px;
+        top: 0;
+      }
 
-  productsContainer.addEventListener('click', e => {
-    if(e.target.classList.contains('btn-add-cart')) {
-      const id = e.target.dataset.id;
-      addToCart(id);
-    }
-  });
+      @keyframes floatUp {
+        to {
+          transform: translateY(-200px) rotate(45deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Halaman Tembakan -->
+    <div class="page active" id="page1">
+      <div class="box">
+        <h1>Halo Emerensiana Aprilia Clara?</h1>
+        <p>
+          MauKah kamu Menjadi Istriku...<br />Dan akhirnya B cuma mau bilang:
+        </p>
+        <h2>Gas Nikah ❤️</h2>
+        <p>Gas Sn Ni</p>
+        <button class="btn" onclick="jawab()">Iya, aku mau 😊</button>
+        <button class="btn" id="noBtn" onmouseover="lari()">
+          Maaf, belum bisa 🙁
+        </button>
+      </div>
+    </div>
 
-  cartBtn.addEventListener('click', () => {
-    cartOverlay.classList.add('open');
-    cartOverlay.setAttribute('aria-hidden', 'false');
-    cartOverlay.focus();
-  });
+    <!-- Halaman Foto Berdua -->
+    <div class="page" id="page2">
+      <img src="roman.jpg" alt="Foto Kita" />
+      <h2>Gas Buat Anak 10 💖</h2>
+      <p>Banyak Anak Banyak Rejeki 😘</p>
+    </div>
 
-  btnCloseCart.addEventListener('click', () => {
-    cartOverlay.classList.remove('open');
-    cartOverlay.setAttribute('aria-hidden', 'true');
-    cartBtn.focus();
-  });
+    <!-- Efek Suara -->
+    <audio
+      id="soundEffect"
+      src="https://www.myinstants.com/media/sounds/cartoon-jump.mp3"
+    ></audio>
 
-  document.addEventListener('keydown', e => {
-    if(e.key === 'Escape' && cartOverlay.classList.contains('open')) {
-      cartOverlay.classList.remove('open');
-      cartOverlay.setAttribute('aria-hidden', 'true');
-      cartBtn.focus();
-    }
-  });
+    <script>
+      function jawab() {
+        document.getElementById("page1").classList.remove("active");
+        document.getElementById("page2").classList.add("active");
 
-  cartItemsContainer.addEventListener('click', e => {
-    const id = e.target.dataset.id;
-    if(!id) return;
-    if(e.target.classList.contains('qty-btn')) {
-      const action = e.target.dataset.action;
-      changeQuantity(id, action);
-    } else if(e.target.classList.contains('btn-remove')) {
-      removeItem(id);
-    }
-  });
+        // Animasi hati
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          heart.style.top = window.innerHeight + "px";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }
+      }
 
-  btnCheckout.addEventListener('click', () => {
-    if(Object.keys(cart).length === 0) return;
+      let scale = 1;
+      function lari() {
+        const btn = document.getElementById("noBtn");
+        const sound = document.getElementById("soundEffect");
 
-    // Prepare WhatsApp message text
-    let message = 'Hello, I would like to place an order from Laptop Mulia Karya:%0A%0A';
-    let total = 0;
-    Object.entries(cart).forEach(([id, qty]) => {
-      const product = products.find(p => p.id == id);
-      if (!product) return;
-      const itemTotal = product.price * qty;
-      total += itemTotal;
-      message += `- ${product.title} x${qty} = $${itemTotal.toFixed(2)}%0A`;
-    });
-    message += `%0ATotal: $${total.toFixed(2)}%0A`;
-    message += '%0APlease let me know the payment details. Thank you!';
+        // Posisi acak
+        const maxX = window.innerWidth - btn.offsetWidth;
+        const maxY = window.innerHeight - btn.offsetHeight;
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        btn.style.left = randomX + "px";
+        btn.style.top = randomY + "px";
 
-    // Put your WhatsApp number here in international format without plus, e.g. 6285165065850
-    const phoneNumber = '6285165065850';
+        // Suara lucu
+        sound.play();
 
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
-
-    // Open WhatsApp chat in new tab
-    window.open(whatsappURL, '_blank');
-
-    // Clear cart after redirect
-    cart = {};
-    saveCart();
-    renderCart();
-    updateCartCount();
-    cartOverlay.classList.remove('open');
-    cartOverlay.setAttribute('aria-hidden', 'true');
-    cartBtn.focus();
-  });
-
-  renderProducts();
-  renderCart();
-  updateCartCount();
-</script>
-<a href="https://wa.me/6285165065850?text=Halo%20admin%2C%20saya%20mau%20tanya%20soal%20laptop" 
-   class="wa-float" 
-   target="_blank" 
-   aria-label="Chat via WhatsApp">
-  <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" 
-       alt="WhatsApp Chat" 
-       class="wa-icon-small" />
-</a>
-
-</body>
+        // Mengecilkan tombol
+        scale -= 0.1;
+        if (scale < 0.3) scale = 0.3; // Biar ga hilang
+        btn.style.transform = `scale(${scale})`;
+      }
+    </script>
+  </body>
 </html>
-

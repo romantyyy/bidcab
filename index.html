@@ -56,6 +56,7 @@
 
       #noBtn {
         position: absolute;
+        transition: left 0.3s ease, top 0.3s ease;
       }
 
       img {
@@ -119,7 +120,7 @@
         <h2>Gas Nikah ❤️</h2>
         <p>Gas Sn Ni</p>
         <button class="btn" onclick="jawab()">Iya, aku mau 😊</button>
-        <button class="btn" id="noBtn" onmouseover="lari()">
+        <button class="btn" id="noBtn" onmouseover="lari()" onclick="lari()">
           Maaf, belum bisa 🙁
         </button>
       </div>
@@ -137,11 +138,20 @@
       id="soundEffect"
       src="https://www.myinstants.com/media/sounds/cartoon-jump.mp3"
     ></audio>
+    <audio
+      id="yesSound"
+      src="https://www.myinstants.com/media/sounds/anime-wow-sound.mp3"
+    ></audio>
 
     <script>
       function jawab() {
         document.getElementById("page1").classList.remove("active");
         document.getElementById("page2").classList.add("active");
+
+        // Putar audio romantis
+        const yesSound = document.getElementById("yesSound");
+        yesSound.currentTime = 0;
+        yesSound.play();
 
         // Animasi hati
         for (let i = 0; i < 20; i++) {
@@ -154,12 +164,11 @@
         }
       }
 
-      let scale = 1;
       function lari() {
         const btn = document.getElementById("noBtn");
         const sound = document.getElementById("soundEffect");
 
-        // Posisi acak
+        // Reset posisi acak
         const maxX = window.innerWidth - btn.offsetWidth;
         const maxY = window.innerHeight - btn.offsetHeight;
         const randomX = Math.floor(Math.random() * maxX);
@@ -168,12 +177,13 @@
         btn.style.top = randomY + "px";
 
         // Suara lucu
+        sound.currentTime = 0;
         sound.play();
 
-        // Mengecilkan tombol
-        scale -= 0.1;
-        if (scale < 0.3) scale = 0.3; // Biar ga hilang
-        btn.style.transform = `scale(${scale})`;
+        // Pastikan tombol tetap kelihatan
+        btn.style.transform = "scale(1)";
+        btn.style.opacity = "1";
+        btn.style.display = "block";
       }
     </script>
   </body>
